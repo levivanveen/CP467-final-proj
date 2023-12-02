@@ -1,21 +1,10 @@
 import cv2
+import numpy as np
 
-def obj_detection(objects, scenes):
-    print("Made it here")
-    # Load the scene and object images
-    scene_img = scenes[0]
-    object_img = objects[0]
+import cv2
+import numpy as np
 
-    print(scene_img is None)
-    print(object_img is None)
-
-    # debug by showing the images
-    cv2.imshow('Scene', scene_img)
-    cv2.waitKey(0)
-    cv2.imshow('Object', object_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
+def obj_detection(object_img, scene_img, object_name):
     # Initialize SIFT detector
     sift = cv2.SIFT_create()
 
@@ -36,11 +25,28 @@ def obj_detection(objects, scenes):
     # Draw matches on the scene image
     img_matches = cv2.drawMatches(object_img, kp_object, scene_img, kp_scene, good_matches, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
-    # Display the result
-    print("helllo")
-    cv2.imshow('Matches', img_matches)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Get coordinates of matched points
+    obj_pts = np.float32([kp_object[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+    scene_pts = np.float32([kp_scene[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+
+    # Find homography matrix
+    H, _ = cv2.findHomography(obj_pts, scene_pts, cv2.RANSAC)
+
+    # Get object corners and transform them to scene coordinates
+    h, w = object_img.shape[:2]
+    obj_corners = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(-1, 1, 2)
+    scene_corners = cv2.perspectiveTransform(obj_corners, H)
+
+    # Draw a bounding box around the detected object
+    scene_img_with_box = scene_img.copy()
+    cv2.polylines(scene_img_with_box, [np.int32(scene_corners)], True, (0, 255, 0), 2)
+
+    # Annotate the detected object with the corresponding object name
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(scene_img_with_box, object_name, (int(scene_corners[0][0][0]), int(scene_corners[0][0][1]) - 10),
+                font, 0.5, (255, 0, 0), 2, cv2.LINE_AA)
+
+    return scene_img_with_box
 
 def table_data(scenes, total_objects):
     # Calculate metrics for each scene
