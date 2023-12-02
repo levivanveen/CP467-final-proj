@@ -1,37 +1,47 @@
 import json
 import cv2
 import os
-from object_id import obj_detection
+from object_id import scene_objects, update_scene_data
 
 # Constants
 TOTAL_OBJECTS = 18
 TOTAL_SCENES = 21
 OBJECTS_FOLDER = '../Objects/'
 SCENES_FOLDER = '../Scenes/'
+DETECTED_FOLDER = '../Detected_Objects/'
+KEY_FOLDER = '../Keypoints/'
+MATCH_FOLDER = '../Matches/'
+
 OBJECT_PREFIX = 'O'
 SCENE_PREFIX = 'S'
-IMG_INFO_FILE = 'img_mapping.json'
+IMG_MAP_FILE = 'img_mapping.json'
 
 def main():
-    obj_info, scene_info = load_img_info()
+    obj_info, scene_info = load_img_mapping()
     objects = load_images(OBJECTS_FOLDER, TOTAL_OBJECTS, OBJECT_PREFIX)
-    scene = load_single_img(SCENES_FOLDER, SCENE_PREFIX, 1)
-    
-    # Load all scene images
-    #scenes = load_images(SCENES_FOLDER, TOTAL_SCENES, SCENE_PREFIX)
-    obj_index = 0
-    print(len(objects))
-    for obj in objects:
-        if obj_index == 9 or obj_index == 10 or obj_index == 13:
-            obj_index += 1
-            print(obj_index, 'skipped')
-            continue
-        scene_img_with_box = obj_detection(obj, scene, obj_info[obj_index]['obj_name'])
-        obj_index += 1
-        print(obj_index)
-    cv2.imshow('Detected Object', scene_img_with_box)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+
+    # Check the detection for each scene
+    i = int(input("Enter scene number: "))
+    scene = load_single_img(SCENES_FOLDER, SCENE_PREFIX, i)
+
+    detect_img, scene_key, obj_keys, matches = scene_objects(scene, objects, obj_info)
+    update_scene_data(detect_img, scene_info[i - 1])
+    # Save scene data
+    save_img_mapping(scene_info, obj_info)
+
+    save_img(detect_img, DETECTED_FOLDER, SCENE_PREFIX, f'{i}_detected')
+    #save_img(scene_key, KEY_FOLDER, SCENE_PREFIX, f'{i}_keypoints')
+
+    for obj_key in obj_keys:
+        if obj_key is not None:
+            save_img(obj_key['img'], KEY_FOLDER, OBJECT_PREFIX, f'{obj_key["number"]}_keypoints')
+
+    for match in matches:
+        if match is not None:
+            save_img(match['img'], MATCH_FOLDER, SCENE_PREFIX, f'{i}_O{match["number"]}_matches')
+
+    print("Scene", i, "done")
+
     return 0
 
 def load_images(folder, total_items, item_prefix):
@@ -47,12 +57,24 @@ def load_single_img(folder, item_prefix, item_id):
     item_path = os.path.join(folder, f'{item_prefix}{item_id}.png')
     return cv2.imread(item_path, cv2.IMREAD_COLOR)
 
-def load_img_info():
-    with open(IMG_INFO_FILE, 'r') as f:
+def load_img_mapping():
+    with open(IMG_MAP_FILE, 'r') as f:
         # image info is a dict with keys 'objects' and 'scenes'
         image_info = json.load(f)
         return image_info['objects'], image_info['scenes']
 
+def save_img(img, folder, item_prefix, item_id):
+    item_path = os.path.join(folder, f'{item_prefix}{item_id}.png')
+    cv2.imwrite(item_path, img)
+
+def save_img_mapping(scene_info, obj_info):
+    with open(IMG_MAP_FILE, 'w') as f:
+        # image info is a dict with keys 'objects' and 'scenes'
+        image_info = {
+            'objects': obj_info,
+            'scenes': scene_info
+        }
+        json.dump(image_info, f, indent=4)
 
 if __name__ == "__main__":
     curr_dir = os.getcwd()

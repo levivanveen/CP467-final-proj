@@ -4,13 +4,48 @@ import numpy as np
 import cv2
 import numpy as np
 
-def obj_detection(object_img, scene_img, object_name):
+def scene_objects(scene_img, object_images, object_info):
+    obj_keys = []
+    matches = []
+    scene_dupe = scene_img.copy()
+
+    obj_index = 0
+    for obj in object_images:
+        obj_name = object_info[obj_index]['name']
+        detect_img, scene_key, obj_key, match = obj_detection(obj, scene_img, obj_name, scene_dupe)
+
+        if obj_key is None:
+            obj_keys.append(None)
+        else:
+            obj_keys.append({
+                'img': obj_key,
+                'number': obj_index + 1
+            })
+
+        if match is None:
+            matches.append(None)
+        else:
+            matches.append({
+                'img': match,
+                'number': obj_index + 1
+            })
+
+        obj_index += 1
+    return detect_img, scene_key, obj_keys, matches
+
+def obj_detection(object_img, scene_img, object_name, scene_untouched):
     # Initialize AKAZE detector
-    akaze = cv2.AKAZE_create()
+    sift = cv2.SIFT_create()
 
     # Detect keypoints and compute descriptors
-    kp_scene, des_scene = akaze.detectAndCompute(scene_img, None)
-    kp_object, des_object = akaze.detectAndCompute(object_img, None)
+    kp_scene, des_scene = sift.detectAndCompute(scene_untouched, None)
+    kp_object, des_object = sift.detectAndCompute(object_img, None)
+
+    scene_dupe = scene_untouched.copy()
+
+    scene_keypoints = cv2.drawKeypoints(scene_dupe, kp_scene, None)
+    #object_keypoints = cv2.drawKeypoints(object_img, kp_object, None)
+    object_keypoints = None
 
     # Use a feature matcher (e.g., Brute-Force) to find matches
     bf = cv2.BFMatcher()
@@ -28,19 +63,22 @@ def obj_detection(object_img, scene_img, object_name):
 
     if not obj_pts.any() or not scene_pts.any() or len(good_matches) < 4:
         print("No matches found / Not enough matches found")
-        return scene_img
+        return scene_img, scene_keypoints, object_keypoints, None
+
+    img_matches = cv2.drawMatches(object_img, kp_object, scene_img, kp_scene, good_matches, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
     # Use RANSAC to estimate the homography matrix
     H, _ = cv2.findHomography(obj_pts, scene_pts, cv2.RANSAC)
+    if H is None:
+        # Try create a homography matrix with all points
+        H, _ = cv2.findHomography(obj_pts, scene_pts, 0)
+        if H is None:
+            print("Failed to create homography matrix")
+            return scene_img, scene_keypoints, object_keypoints, img_matches
 
     # Choose the first set of matched keypoints
     obj_corners = np.float32([[0, 0], [0, object_img.shape[0] - 1],
                               [object_img.shape[1] - 1, object_img.shape[0] - 1], [object_img.shape[1] - 1, 0]])
-
-    obj_corners_shape = obj_corners.shape
-    if obj_corners_shape != (4, 1, 2) and obj_corners_shape != (4, 2):
-        print(f"Invalid shape of obj_corners: {obj_corners_shape}")
-        return scene_img
 
     obj_corners = obj_corners.reshape(4, 1, 2)
     # Transform object corners to the scene using the estimated homography
@@ -57,14 +95,33 @@ def obj_detection(object_img, scene_img, object_name):
 
     # Annotate the detected object with the corresponding object name at the center
     font = cv2.FONT_HERSHEY_SIMPLEX
-    font_scale = 1.5  # Adjust the font scale as needed
+    font_scale = 2  # Adjust the font scale as needed
     text_size = cv2.getTextSize(object_name, font, font_scale, 2)[0]
     text_x, text_y = int(center_x - text_size[0] // 2), int(center_y + text_size[1] // 2)
     cv2.putText(scene_img, object_name, (text_x, text_y),
                 font, font_scale, (255, 0, 0), 2, cv2.LINE_AA)
 
-    return scene_img
+    return scene_img, scene_keypoints, object_keypoints, img_matches
 
+def update_scene_data(scene_img, scene_info):
+    # We are given a scene image with detected objects and the scene info
+    # First, show the user the scene image with the detected objects
+    print("Press any key to continue...")
+    cv2.imshow("Scene Image", scene_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    identified_objects = input("Enter the correctly identified objects: ")
+    identified_objects = [int(obj) for obj in identified_objects.split(",")]
+
+    misidentified_objects = input("Enter the incorrectly identified objects: ")
+    misidentified_objects = [int(obj) for obj in misidentified_objects.split(",")]
+
+    # Update the scene info with the identified and misidentified objects
+    scene_info["identified_objects"] = identified_objects
+    scene_info["misidentified_objects"] = misidentified_objects
+
+    return scene_info
 
 def table_data(scenes, total_objects):
     # Calculate metrics for each scene

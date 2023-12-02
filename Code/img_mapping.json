@@ -2,75 +2,75 @@
     "objects": [
         {
             "obj_id": "O1",
-            "obj_name": "knife1"
+            "name": "knife1"
         },
         {
             "obj_id": "O2",
-            "obj_name": "spoon1"
+            "name": "spoon1"
         },
         {
             "obj_id": "O3",
-            "obj_name": "pencil"
+            "name": "pencil"
         },
         {
             "obj_id": "O4",
-            "obj_name": "glasses"
+            "name": "glasses"
         },
         {
             "obj_id": "O5",
-            "obj_name": "measuring cup"
+            "name": "measuring cup"
         },
         {
             "obj_id": "O6",
-            "obj_name": "snowman"
+            "name": "snowman"
         },
         {
             "obj_id": "O7",
-            "obj_name": "controller"
+            "name": "controller"
         },
         {
             "obj_id": "O8",
-            "obj_name": "tape"
+            "name": "tape"
         },
         {
             "obj_id": "O9",
-            "obj_name": "marker"
+            "name": "marker"
         },
         {
             "obj_id": "O10",
-            "obj_name": "bidoof"
+            "name": "bidoof"
         },
         {
             "obj_id": "O11",
-            "obj_name": "fork"
+            "name": "fork"
         },
         {
             "obj_id": "O12",
-            "obj_name": "knife2"
+            "name": "knife2"
         },
         {
             "obj_id": "O13",
-            "obj_name": "potato"
+            "name": "potato"
         },
         {
             "obj_id": "O14",
-            "obj_name": "spoon2"
+            "name": "spoon2"
         },
         {
             "obj_id": "O15",
-            "obj_name": "pen"
+            "name": "pen"
         },
         {
             "obj_id": "O16",
-            "obj_name": "lighter"
+            "name": "lighter"
         },
         {
             "obj_id": "O17",
-            "obj_name": "airpod"
+            "name": "airpod"
         },
         {
             "obj_id": "O18",
-            "obj_name": "scorbunny"
+            "name": "scorbunny"
         }
     ],
     "scenes": [
@@ -96,7 +96,25 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                6,
+                8,
+                11,
+                13
+            ],
+            "misidentified_objects": [
+                1,
+                2,
+                4,
+                5,
+                7,
+                10,
+                12,
+                14,
+                16,
+                17,
+                18
+            ]
         },
         {
             "scene_id": "S2",
