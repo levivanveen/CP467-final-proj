@@ -15,13 +15,23 @@ IMG_INFO_FILE = 'img_mapping.json'
 def main():
     obj_info, scene_info = load_img_info()
     objects = load_images(OBJECTS_FOLDER, TOTAL_OBJECTS, OBJECT_PREFIX)
-    scene = load_single_img
+    scene = load_single_img(SCENES_FOLDER, SCENE_PREFIX, 1)
     
     # Load all scene images
     #scenes = load_images(SCENES_FOLDER, TOTAL_SCENES, SCENE_PREFIX)
-
-    obj_detection(objects[0], scenes[0])
-
+    obj_index = 0
+    print(len(objects))
+    for obj in objects:
+        if obj_index == 9 or obj_index == 10 or obj_index == 13:
+            obj_index += 1
+            print(obj_index, 'skipped')
+            continue
+        scene_img_with_box = obj_detection(obj, scene, obj_info[obj_index]['obj_name'])
+        obj_index += 1
+        print(obj_index)
+    cv2.imshow('Detected Object', scene_img_with_box)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     return 0
 
 def load_images(folder, total_items, item_prefix):
