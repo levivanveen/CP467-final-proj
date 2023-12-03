@@ -20,10 +20,3 @@ for file in $modified_files; do
         commit_number=$((commit_number + 1))
     fi
 done
-
-# Commit and push any remaining files
-if [ $count -gt 0 ]; then
-    git commit -m "Reformatted images pt. $commit_number"
-    git push origin main
-    wait
-fi
