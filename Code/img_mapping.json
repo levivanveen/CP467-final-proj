@@ -137,7 +137,27 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                6,
+                8,
+                10,
+                13,
+                18
+            ],
+            "misidentified_objects": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                7,
+                9,
+                11,
+                14,
+                15,
+                16,
+                17
+            ]
         },
         {
             "scene_id": "S3",
@@ -161,7 +181,21 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                8,
+                13,
+                18
+            ],
+            "misidentified_objects": [
+                1,
+                2,
+                4,
+                10,
+                11,
+                12,
+                14,
+                16
+            ]
         },
         {
             "scene_id": "S4",
@@ -177,7 +211,24 @@
                 "O15",
                 "O16"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                7,
+                10,
+                13,
+                8,
+                9,
+                11
+            ],
+            "misidentified_objects": [
+                4,
+                5,
+                17,
+                18,
+                2,
+                3,
+                12,
+                15
+            ]
         },
         {
             "scene_id": "S5",
@@ -196,7 +247,22 @@
                 "O16",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                6,
+                8,
+                18,
+                14,
+                15
+            ],
+            "misidentified_objects": [
+                10,
+                7,
+                1,
+                5,
+                3,
+                12,
+                11
+            ]
         },
         {
             "scene_id": "S6",
@@ -213,7 +279,24 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                13
+            ],
+            "misidentified_objects": [
+                1,
+                12,
+                6,
+                15,
+                5,
+                10,
+                8,
+                16,
+                7,
+                9,
+                3,
+                18,
+                11
+            ]
         },
         {
             "scene_id": "S7",
@@ -226,7 +309,20 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                1,
+                18
+            ],
+            "misidentified_objects": [
+                17,
+                2,
+                5,
+                10,
+                12,
+                16,
+                9,
+                3
+            ]
         },
         {
             "scene_id": "S8",
@@ -245,7 +341,22 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                11,
+                12,
+                13
+            ],
+            "misidentified_objects": [
+                6,
+                5,
+                15,
+                1,
+                17,
+                18,
+                3,
+                7,
+                4
+            ]
         },
         {
             "scene_id": "S9",
@@ -263,7 +374,22 @@
                 "O15",
                 "O16"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                11,
+                13,
+                6
+            ],
+            "misidentified_objects": [
+                12,
+                3,
+                4,
+                5,
+                7,
+                8,
+                1,
+                2,
+                9
+            ]
         },
         {
             "scene_id": "S10",
@@ -278,7 +404,20 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                3,
+                1,
+                18
+            ],
+            "misidentified_objects": [
+                17,
+                7,
+                5,
+                16,
+                11,
+                14,
+                4
+            ]
         },
         {
             "scene_id": "S11",
@@ -299,7 +438,24 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                6,
+                5,
+                18,
+                17,
+                13,
+                8,
+                15
+            ],
+            "misidentified_objects": [
+                1,
+                2,
+                3,
+                4,
+                16,
+                12,
+                10
+            ]
         },
         {
             "scene_id": "S12",
@@ -321,7 +477,20 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                6,
+                13
+            ],
+            "misidentified_objects": [
+                18,
+                7,
+                12,
+                14,
+                2,
+                9,
+                4,
+                5
+            ]
         },
         {
             "scene_id": "S13",
@@ -338,7 +507,23 @@
                 "O15",
                 "O16"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                7,
+                15,
+                8,
+                13,
+                10,
+                9
+            ],
+            "misidentified_objects": [
+                2,
+                1,
+                17,
+                18,
+                12,
+                5,
+                6
+            ]
         },
         {
             "scene_id": "S14",
@@ -354,7 +539,20 @@
                 "O15",
                 "O16"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                10,
+                13,
+                8
+            ],
+            "misidentified_objects": [
+                7,
+                18,
+                1,
+                14,
+                5,
+                4,
+                15
+            ]
         },
         {
             "scene_id": "S15",
@@ -372,7 +570,24 @@
                 "O15",
                 "O16"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                10,
+                13,
+                6,
+                14
+            ],
+            "misidentified_objects": [
+                3,
+                18,
+                8,
+                16,
+                2,
+                1,
+                11,
+                12,
+                7,
+                5
+            ]
         },
         {
             "scene_id": "S16",
@@ -387,7 +602,23 @@
                 "O16",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                18,
+                7,
+                8,
+                14,
+                6,
+                5
+            ],
+            "misidentified_objects": [
+                4,
+                9,
+                10,
+                7,
+                1,
+                11,
+                2
+            ]
         },
         {
             "scene_id": "S17",
@@ -402,7 +633,23 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                18,
+                5
+            ],
+            "misidentified_objects": [
+                2,
+                16,
+                10,
+                7,
+                6,
+                8,
+                1,
+                3,
+                4,
+                11,
+                17
+            ]
         },
         {
             "scene_id": "S18",
@@ -413,7 +660,20 @@
                 "O4",
                 "O5"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                5,
+                1
+            ],
+            "misidentified_objects": [
+                4,
+                15,
+                9,
+                11,
+                14,
+                13,
+                6,
+                7
+            ]
         },
         {
             "scene_id": "S19",
@@ -432,7 +692,20 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                13,
+                11,
+                14,
+                17,
+                18
+            ],
+            "misidentified_objects": [
+                10,
+                4,
+                5,
+                16,
+                6
+            ]
         },
         {
             "scene_id": "S20",
@@ -449,7 +722,23 @@
                 "O15",
                 "O16"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                13,
+                10,
+                8
+            ],
+            "misidentified_objects": [
+                9,
+                3,
+                6,
+                1,
+                12,
+                2,
+                4,
+                17,
+                5,
+                7
+            ]
         },
         {
             "scene_id": "S21",
@@ -462,7 +751,24 @@
                 "O17",
                 "O18"
             ],
-            "identified_objects": []
+            "identified_objects": [
+                4,
+                1,
+                18,
+                3
+            ],
+            "misidentified_objects": [
+                16,
+                2,
+                9,
+                14,
+                7,
+                5,
+                11,
+                12,
+                13,
+                15
+            ]
         }
     ]
 }

@@ -13,7 +13,7 @@ for file in $modified_files; do
 
     # Commit and push every 4 files
     if [ $count -eq 4 ]; then
-        git commit -m "commit pt. $commit_number"
+        git commit -m "Pushing all output images $commit_number"
         git push origin main
         wait
         count=0

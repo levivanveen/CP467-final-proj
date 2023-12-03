@@ -127,11 +127,15 @@ def table_data(scenes, total_objects):
     # Calculate metrics for each scene
     scene_metrics = []
     for scene in scenes:
-        metrics = calculate_metrics(scene["actual_objects"], scene["identified_objects"], total_objects)
+        metrics = calculate_metrics(scene["actual_objects"], scene["identified_objects"], scene["misidentified_objects"], total_objects)
         scene_metrics.append({"scene_id": scene["scene_id"], **metrics})
 
     # Calculate average metrics for the complete dataset
-    avg_metrics = {metric: sum(scene[metric] for scene in scene_metrics) / len(scene_metrics) for metric in scene_metrics[0]}
+    avg_metrics = {
+        metric: sum(scene[metric] for scene in scene_metrics) / len(scene_metrics) 
+        for metric in scene_metrics[0]
+        if metric != "scene_id"
+    }
 
     # Display results
     print("\nMetrics for Each Scene:")
@@ -155,10 +159,10 @@ def table_data(scenes, total_objects):
         "TP", "FP", "TN", "FN", avg_metrics["Precision"], avg_metrics["Recall"], avg_metrics["F1-Score"], avg_metrics["Accuracy"]
     ))
 
-def calculate_metrics(actual_objects, identified_objects, total_objects):
+def calculate_metrics(actual_objects, identified_objects, misidentified_objects, total_objects):
     true_positives = len(set(actual_objects) & set(identified_objects))
     false_positives = len(set(identified_objects) - set(actual_objects))
-    true_negatives = total_objects - len(set(actual_objects) | set(identified_objects))
+    true_negatives = total_objects - len(set(actual_objects) | set(identified_objects) | set(misidentified_objects))
     false_negatives = len(set(actual_objects) - set(identified_objects))
 
     precision = true_positives / (true_positives + false_positives) if (true_positives + false_positives) > 0 else 0

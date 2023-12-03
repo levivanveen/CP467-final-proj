@@ -1,7 +1,7 @@
 import json
 import cv2
 import os
-from object_id import scene_objects, update_scene_data
+from object_id import scene_objects, update_scene_data, table_data
 
 # Constants
 TOTAL_OBJECTS = 18
@@ -19,6 +19,10 @@ IMG_MAP_FILE = 'img_mapping.json'
 def main():
     obj_info, scene_info = load_img_mapping()
     objects = load_images(OBJECTS_FOLDER, TOTAL_OBJECTS, OBJECT_PREFIX)
+    
+    if input("Press enter to get table data") == "":
+        table_data(scene_info, TOTAL_OBJECTS)
+        return
 
     # Check the detection for each scene
     i = int(input("Enter scene number: "))
@@ -30,7 +34,7 @@ def main():
     save_img_mapping(scene_info, obj_info)
 
     save_img(detect_img, DETECTED_FOLDER, SCENE_PREFIX, f'{i}_detected')
-    #save_img(scene_key, KEY_FOLDER, SCENE_PREFIX, f'{i}_keypoints')
+    save_img(scene_key, KEY_FOLDER, SCENE_PREFIX, f'{i}_keypoints')
 
     for obj_key in obj_keys:
         if obj_key is not None:
